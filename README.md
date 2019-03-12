@@ -1,6 +1,6 @@
 # Flutter Cube Login Animation
 
-Flutter Cober animation 
+Flutter Cube animation 
 
 ## Sample
 
