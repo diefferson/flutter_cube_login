@@ -1,101 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/ClipCube.dart';
 
 class LoginWidgets{
 
-  Widget emailStep(Function buttonClick, double angle) {
+  Widget emailScreen(Function buttonClick, double angle) {
     return Container(
         color: Colors.blue,
         child:Padding(padding: EdgeInsets.all(20),
-            child:  Transform.rotate(
-            angle: angle,
-            alignment: Alignment.centerRight,
-            child:Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  style: TextStyle(color: Colors.white),
-                  cursorColor: Colors.white,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: "Email",
-                    labelStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-                  ),
-                ),
-                SizedBox(height: 20),
-                Container(
-                    width: double.infinity,
-                    height: 50,
-                    child:  RaisedButton(
-                      child: const Text('Continuar'),
-                      color: Colors.white,
-                      textColor: Colors.blue,
-                      onPressed: buttonClick,
-                    )
-                )
-              ],
-            )
+            child: Transform.rotate(
+              angle: angle,
+              alignment: Alignment.centerRight,
+              child:Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _textField("Email", inputType: TextInputType.emailAddress),
+                  SizedBox(height: 20),
+                  _button("Continuar", Colors.blue, buttonClick)
+                ],
+              )
             )
         )
     );
   }
 
-  Widget passwordStep(Function buttonClick, double angle, double screenWidth) {
+  Widget passwordScreen({Function buttonClick, double angle, double width, double openedHeight, double opacity}) {
     return Stack(children: <Widget>[
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Container(
-                color: Colors.red,
-                width: screenWidth/2
-            ),
-            Container(
-                color: Colors.blue,
-                width: screenWidth/2
-            ),
+            ClipPath(
+              clipper: ClipCube(fromLeft: false, height: openedHeight),
+              child:Container(color: Colors.red, width: width)),
+            ClipPath(
+              clipper: ClipCube(fromLeft: true, height: openedHeight),
+              child:Container(color: Colors.red, width: width)),
           ],
         ),
         Container(
-        child: Padding(
-            padding: EdgeInsets.all(20),
-            child:  Transform.rotate(
-                angle: angle,
-                alignment: Alignment.centerLeft,
+          child: Padding(
+          padding: EdgeInsets.all(20),
+          child:  Transform.rotate(
+            angle: angle,
+            alignment: Alignment.centerLeft,
+            child: Opacity(
+                opacity: opacity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    TextField(
-                      style: TextStyle(color: Colors.white),
-                      cursorColor: Colors.white,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: "Senha",
-                        labelStyle: TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                        focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white)),
-                      ),
-                    ),
+                    _textField("Senha", obscure: true),
                     SizedBox(height: 20),
-                    Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: RaisedButton(
-                          child: const Text('Entrar'),
-                          color: Colors.white,
-                          textColor: Colors.red,
-                          onPressed: buttonClick,
-                        )
-                    )
+                    _button("Entrar", Colors.red, buttonClick)
                   ],
                 )
             )
+          )
         )
     )]);
   }
@@ -116,6 +76,35 @@ class LoginWidgets{
           ]
         ),
       ),
+    );
+  }
+  
+  Widget _textField(String label, { bool obscure = false, TextInputType inputType = TextInputType.text }){
+    return TextField(
+      style: TextStyle(color: Colors.white),
+      cursorColor: Colors.white,
+      obscureText: obscure,
+      keyboardType: inputType,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.white),
+        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+      ),
+    );
+  }
+  
+  Widget _button(String label, Color textColor, Function action){
+    return Container(
+        width: double.infinity,
+        height: 50,
+        child: RaisedButton(
+          child: Text(label),
+          color: Colors.white,
+          textColor: textColor,
+          onPressed: action,
+        )
     );
   }
 }
